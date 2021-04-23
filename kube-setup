@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# this adds the remote cluster that was set up on gknuc to the list of
+# configured clusters in /home/<user>>/.kube/config
+kubectl config  set-cluster minecraft --server=https://gknuc:33071
+kubectl config  set-context minecraft --cluster=minecraft --namespace=minecraft
+
+#list all contexts availale (so I can get back to my work context)
+kubectl config get-contexts
+
+#this switches kubectl to that new cluster
+kubectl config  use-context minecraft

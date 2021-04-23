@@ -1,0 +1,32 @@
+# created the cluster with
+#   kind create cluster --config config.yaml  --name minecraft
+# this yaml allows remote management and I'm not sure the securty concerns
+# are so great since I need a cert auth and cert pub/priv key in the .kube/config
+# to connect remotely
+
+
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  # WARNING: It is _strongly_ recommended that you keep this the default
+  # (127.0.0.1) for security reasons. However it is possible to change this.
+  apiServerAddress: "192.168.86.32"
+  # By default the API server listens on a random open port.
+  # You may choose a specific port but probably don't need to in most cases.
+  # Using a random port makes it easier to spin up multiple clusters.
+  apiServerPort: 6443
+---
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 30000
+    hostPort: 30000
+  - containerPort: 30001
+    hostPort: 30001
+  - containerPort: 30002
+    hostPort: 30002
+  - containerPort: 30003
+    hostPort: 30003
+- role: worker

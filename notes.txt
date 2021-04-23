@@ -1,0 +1,22 @@
+On the server
+=============
+install docker and add your account to group docker
+start a new shell to pick up group
+
+install kind (TODO link)
+
+kind create cluster --name minecraft --config kind-config.yaml
+less /home/giles/.kube/config
+    copy this file to your workstation or merge it by adding
+        cluster in clusters
+        context in contexts
+        user in users
+
+On the workstation
+==================
+kubectl create namespace minecraft
+kubectl config set-context kind-minecraft --namespace=minecraft
+kubectl apply -f minecraft.yaml
+
+kubectl get all
+# should see a running pod

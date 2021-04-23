@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../docker-minecraft-server"
+		},
+		{
+			"path": "../../containers/epics-containers"
+		}
+	],
+    "settings": {}
+}
