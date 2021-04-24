@@ -1,22 +1,47 @@
-On the server
-=============
-install docker and add your account to group docker
+Setup KinD On the server
+========================
+install docker https://docs.docker.com/engine/install/
+add your account to group docker
 start a new shell to pick up group
 
-install kind (TODO link)
+install kubectl https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-using-native-package-management
 
-kind create cluster --name minecraft --config kind-config.yaml
-less /home/giles/.kube/config
-    copy this file to your workstation or merge it by adding
-        cluster in clusters
-        context in contexts
-        user in users
+install kind https://kind.sigs.k8s.io/docs/user/quick-start/#installation
 
-On the workstation
-==================
+create a minecraft cluster:
+kind create cluster --name minecraft --config kind-config-minecraft.yaml
+
+this creates a local ~/.kube/config
+kubectl commands will now work from the server
+
+Configure the workstation
+=========================
+install kubectl https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-using-native-package-management
+copy over the ~/.kube/config from server
+
+OR if you already existing config you want to keep then:
+
+copy over the ~/.kube/config from server to ~/.kube/mcconfig
+put the following in your bashrc:
+export KUBECONFIG=~/.kube/mcconfig:~/.kube/config
+
+
+Create a minecraft deployment in the cluster
+============================================
+kubectl config use-context kind-minecraft
 kubectl create namespace minecraft
 kubectl config set-context kind-minecraft --namespace=minecraft
 kubectl apply -f minecraft.yaml
 
 kubectl get all
 # should see a running pod
+
+kubectl attach -it deployment.apps/minecraft-one
+# attach to the mc console
+
+kubectl logs deployment.apps/minecraft-one
+# see log of console
+
+kubectl config get-contexts
+# show all contexts so you can return to previous cluster with
+kubectl config use-context MY_PREVIOUS_CONTEXT e.g. cluster-user@argus
